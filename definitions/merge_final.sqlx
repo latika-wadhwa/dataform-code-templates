@@ -1,0 +1,24 @@
+config {
+  type: "operations"
+}
+
+MERGE ${ref("source_data_scd_final")} as T
+USING (Select * from ${ref("source_data_scd_updates")} where updated_at > (select max_updated_at from ${ref("max_data")} )) S
+ON T.user_id = S.user_id
+	AND T.changing_field1 = S.changing_field1  
+  	AND T.changing_field2= S.changing_field2
+  	AND T.changing_field3 = S.changing_field3  
+	AND T.exp_date IS NULL  
+WHEN NOT MATCHED BY SOURCE AND t.exp_date is null THEN
+UPDATE 
+SET t.exp_date = 
+		case 
+			when t.exp_date is NULL then
+		(select max(updated_at) from ${ref("source_data_scd_updates")})
+			else t.exp_date 
+		end   
+WHEN NOT MATCHED BY TARGET THEN
+  INSERT(	
+user_id, changing_field1, changing_field2, changing_field3,updated_at, eff_date,exp_date)
+  VALUES(user_id, changing_field1, changing_field2,changing_field3,updated_at,updated_at,null)
+

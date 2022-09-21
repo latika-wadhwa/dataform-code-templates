@@ -1,0 +1,52 @@
+config {
+  type: "view"
+}
+
+WITH example_dataset AS (
+  SELECT
+    user_id,
+    changing_field1,
+    changing_field2,
+    changing_field3,
+    updated_at
+  FROM
+    (
+      SELECT
+        1 as user_id,
+        'acf1_update_cnt2' AS changing_field1,
+        'acf2_update_cnt1' AS changing_field2,
+        'acf3_update_cnt3' AS changing_field3,
+        date_add(current_date(), interval -2 day) AS updated_at
+    )
+  UNION ALL
+    (
+      SELECT
+        2 as user_id,
+        'bcf1_update_cnt2' AS changing_field1,
+        'bcf2_update_cnt2' AS changing_field2,
+        'bcf3_update_cnt1' AS changing_field3,
+        date_add(current_date(), interval -2 day) AS updated_at
+    )
+  UNION ALL
+    (
+      SELECT
+        3 as user_id,
+        'ccf1_update_cnt1' AS changing_field1,
+        'ccf2_update_cnt2' AS changing_field2,
+        'ccf3_update_cnt1' AS changing_field3,
+        date_add(current_date(), interval -2 day) AS updated_at
+    )
+  UNION ALL
+    (
+      SELECT
+        4 as user_id,
+        'dcf1_update_cnt3' AS changing_field1,
+        'dcf2_update_cnt1' AS changing_field2,
+        'dcf3_update_cnt2' AS changing_field3,
+        date_add(current_date(), interval -2 day) AS updated_at
+    )      
+)
+SELECT
+  *
+FROM
+  example_dataset

@@ -1,5 +1,11 @@
 {
-    "defaultSchema": "dataform",
+    "defaultSchema": "dataform_scd",
     "assertionSchema": "dataform_assertions",
-    "useRunCache": false
+    "warehouse": "bigquery",
+    "defaultDatabase": "latika-experiments",
+    "defaultLocation": "US",
+    "useRunCache": false,
+    "vars": {
+        "executionDate":"2022-09-20"
+     }
 }
